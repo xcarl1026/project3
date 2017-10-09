@@ -37,7 +37,11 @@ public class Console {
        String pass = gui.getpassTextField().getText();
        System.out.println(userName);
        System.out.println(pass);
-       connection = DriverManager.getConnection(dbURL, userName, pass);
+       try{
+           connection = DriverManager.getConnection(dbURL, userName, pass);
+       }catch(SQLException ex){
+           System.out.print("Cannot connect to db");
+       }
        conStatus = connection.isClosed();
     
            gui.getdbConLabel().setBackground(green);
