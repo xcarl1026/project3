@@ -11,7 +11,10 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -47,15 +50,15 @@ public class GUI extends javax.swing.JFrame {
         userTextField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        queryField = new javax.swing.JTextArea();
         dbConLabel = new javax.swing.JLabel();
         connectDB = new javax.swing.JButton();
         clearSQLBut = new javax.swing.JButton();
         execSQLBut = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        resuWIndow = new javax.swing.JLayeredPane();
-        clearWinBut = new javax.swing.JButton();
         passTextField = new javax.swing.JPasswordField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        guiResultTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
@@ -117,9 +120,9 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Enter SQL Command");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        queryField.setColumns(20);
+        queryField.setRows(5);
+        jScrollPane1.setViewportView(queryField);
 
         dbConLabel.setBackground(new java.awt.Color(0, 0, 0));
         dbConLabel.setForeground(new java.awt.Color(255, 51, 51));
@@ -135,36 +138,38 @@ public class GUI extends javax.swing.JFrame {
         });
 
         clearSQLBut.setText("Clear SQL Command");
+        clearSQLBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearSQLButActionPerformed(evt);
+            }
+        });
 
         execSQLBut.setText("Execute SQL Command");
+        execSQLBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                execSQLButActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("SQL Execution Window");
 
-        resuWIndow.setBackground(new java.awt.Color(204, 204, 204));
-        resuWIndow.setOpaque(true);
-
-        javax.swing.GroupLayout resuWIndowLayout = new javax.swing.GroupLayout(resuWIndow);
-        resuWIndow.setLayout(resuWIndowLayout);
-        resuWIndowLayout.setHorizontalGroup(
-            resuWIndowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        resuWIndowLayout.setVerticalGroup(
-            resuWIndowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
-        );
-
-        clearWinBut.setText("Clear Results");
-        clearWinBut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearWinButActionPerformed(evt);
-            }
-        });
-
         passTextField.setMaximumSize(new java.awt.Dimension(54, 10));
         passTextField.setMinimumSize(new java.awt.Dimension(54, 10));
         passTextField.setPreferredSize(new java.awt.Dimension(54, 10));
+
+        guiResultTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(guiResultTable);
 
         jLayeredPane1.setLayer(infoLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jbcLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -181,19 +186,17 @@ public class GUI extends javax.swing.JFrame {
         jLayeredPane1.setLayer(clearSQLBut, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(execSQLBut, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(resuWIndow, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(clearWinBut, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(passTextField, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(resuWIndow)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,7 +206,7 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(connectDB))
                             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jbcLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                    .addComponent(jbcLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                                     .addComponent(userLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(dbLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(passLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -226,7 +229,9 @@ public class GUI extends javax.swing.JFrame {
                             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                 .addGap(31, 31, 31)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(clearWinBut))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jLayeredPane1Layout.setVerticalGroup(
@@ -269,46 +274,63 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resuWIndow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(clearWinBut)
-                .addGap(20, 20, 20))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jdbcDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jdbcDropDownActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jdbcDropDownActionPerformed
+    private void connectDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectDBActionPerformed
+        try {
+            // TODO add your handling code here:
+            console.connectDB();
+            connectDB.setEnabled(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
+    }//GEN-LAST:event_connectDBActionPerformed
 
     private void userTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userTextFieldActionPerformed
 
-    private void connectDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectDBActionPerformed
+    private void jdbcDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jdbcDropDownActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jdbcDropDownActionPerformed
+
+    private void execSQLButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_execSQLButActionPerformed
         try {
             // TODO add your handling code here:
-            console.connectDB();
+            console.ResultTable();
         } catch (SQLException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_connectDBActionPerformed
+    }//GEN-LAST:event_execSQLButActionPerformed
 
-    private void clearWinButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearWinButActionPerformed
+    private void clearSQLButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearSQLButActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_clearWinButActionPerformed
+        queryField.setText("");
+    }//GEN-LAST:event_clearSQLButActionPerformed
 
     public JComboBox getJDBCDropDown(){
         return jdbcDropDown;
@@ -332,6 +354,14 @@ public class GUI extends javax.swing.JFrame {
     
     public JButton getdbConButt(){
         return connectDB;
+    }
+    
+    public JTable getguiResultTable(){
+        return guiResultTable;
+    }
+    
+    public JTextArea getqueryField(){
+        return queryField;
     }
     /**
      * @param args the command line arguments
@@ -370,23 +400,23 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearSQLBut;
-    private javax.swing.JButton clearWinBut;
     private javax.swing.JButton connectDB;
     private javax.swing.JLabel dbConLabel;
     private javax.swing.JComboBox<String> dbDropDown;
     private javax.swing.JLabel dbLabel;
     private javax.swing.JButton execSQLBut;
+    private javax.swing.JTable guiResultTable;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jbcLabel;
     private javax.swing.JComboBox<String> jdbcDropDown;
     private javax.swing.JLabel passLabel;
     private javax.swing.JPasswordField passTextField;
-    private javax.swing.JLayeredPane resuWIndow;
+    private javax.swing.JTextArea queryField;
     private javax.swing.JLabel userLabel;
     private javax.swing.JTextField userTextField;
     // End of variables declaration//GEN-END:variables
